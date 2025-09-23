@@ -12,17 +12,14 @@ import com.kon.service.IArticleService;
 import com.kon.utils.BeanCopyUtils;
 import lombok.RequiredArgsConstructor;
 
-import org.aspectj.weaver.Utils;
-import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 
 
 @Service
 @RequiredArgsConstructor
-public class IArticleServiceImpl extends ServiceImpl<ArticleMapper, Article> implements IArticleService {
+public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article> implements IArticleService {
 
     private final ArticleMapper articLeMapper;
 
