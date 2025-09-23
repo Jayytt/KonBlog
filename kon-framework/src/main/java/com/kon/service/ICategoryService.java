@@ -1,5 +1,7 @@
 package com.kon.service;
 
+import com.baomidou.mybatisplus.extension.service.IService;
+import com.kon.domain.entity.Category;
 import com.kon.result.ResponseResult;
 
 /**
@@ -8,7 +10,7 @@ import com.kon.result.ResponseResult;
  * @author makejava
  * @since 2025-09-23 09:35:27
  */
-public interface ICategoryService {
+public interface ICategoryService extends IService<Category> {
 /*查询分类列表*/
     ResponseResult getCategoryList();
 }

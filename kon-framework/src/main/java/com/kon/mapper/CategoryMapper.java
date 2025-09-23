@@ -1,20 +1,15 @@
 package com.kon.mapper;
 
-
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.kon.domain.entity.Category;
-import org.apache.ibatis.annotations.Mapper;
+import com.kon.domain.vo.ArticleListVo;
 
+import java.util.List;
 
 /**
- * 分类表(Category)表数据库访问层
- *
- * @author makejava
- * @since 2025-09-23 09:42:05
+ * @author 35238
+ * @date 2023/7/19 0019 22:38
  */
-@Mapper
 public interface CategoryMapper extends BaseMapper<Category> {
-
-
+    List<ArticleListVo> searchList(String search);
 }
-

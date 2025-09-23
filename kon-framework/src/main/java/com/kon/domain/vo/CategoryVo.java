@@ -8,11 +8,9 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class CategoryVO {
+public class CategoryVo {
     //分类id
     private Long id;
-    //父类id
-    private Long pid;
     //分类名称
     private String name;
 

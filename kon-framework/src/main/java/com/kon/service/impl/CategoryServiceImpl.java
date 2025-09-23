@@ -1,21 +1,18 @@
 package com.kon.service.impl;
-
-
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.kon.constant.SystemConstants;
 import com.kon.domain.entity.Article;
 import com.kon.domain.entity.Category;
-import com.kon.domain.vo.CategoryVO;
+import com.kon.domain.vo.CategoryVo;
 import com.kon.mapper.CategoryMapper;
 import com.kon.result.ResponseResult;
 import com.kon.service.IArticleService;
 import com.kon.service.ICategoryService;
 import com.kon.utils.BeanCopyUtils;
-import lombok.AllArgsConstructor;
-
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
-
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -27,12 +24,18 @@ import java.util.stream.Collectors;
  * @author makejava
  * @since 2025-09-23 09:35:27
  */
-@AllArgsConstructor
+
 @Service("categoryService")
 public class CategoryServiceImpl
         extends ServiceImpl<CategoryMapper, Category> implements ICategoryService {
 
-    private final IArticleService articleService;
+
+    private IArticleService articleService;
+
+    // 手动声明构造函数，对依赖添加@Lazy
+    public CategoryServiceImpl(@Lazy IArticleService articleService) {
+        this.articleService = articleService;
+    }
 
     /*  @Override
       public ResponseResult getCategoryList() {
@@ -53,7 +56,7 @@ public class CategoryServiceImpl
                           SystemConstants.CATEGORY_STATUS_NORMAL==(category.getStatus()))
                   .collect(Collectors.toList());
           //封装VO
-          List<CategoryVO> categoryVOS = BeanCopyUtils.copyBeanList(categories, CategoryVO.class);
+          List<CategoryVo> categoryVOS = BeanCopyUtils.copyBeanList(categories, CategoryVo.class);
 
 
           return ResponseResult.okResult(categoryVOS);*/
@@ -78,8 +81,8 @@ public class CategoryServiceImpl
         List<Category> categories = list(categoryWrapper); // 直接得到过滤后的结果
 
         // 4. 转换为VO并返回
-        List<CategoryVO> categoryVOS = BeanCopyUtils.copyBeanList(categories, CategoryVO.class);
-        return ResponseResult.okResult(categoryVOS);
+        List<CategoryVo> categoryVos = BeanCopyUtils.copyBeanList(categories, CategoryVo.class);
+        return ResponseResult.okResult(categoryVos);
     }
 }
 

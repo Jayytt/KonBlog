@@ -34,7 +34,6 @@
         <knife4j>3.0.3</knife4j>
 
 
-
     </properties>
     <dependencies>
         <dependency>
@@ -129,7 +128,7 @@
 
     </dependencyManagement>
 
-   <build>
+    <build>
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -159,6 +158,6 @@
                 </executions>
             </plugin>
         </plugins>
-   </build>
+    </build>
 
 </project>
