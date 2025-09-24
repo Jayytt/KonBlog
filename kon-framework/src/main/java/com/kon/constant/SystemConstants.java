@@ -2,10 +2,7 @@ package com.kon.constant;
 
 public class SystemConstants
 {
-    /**
-     * 文章是草稿
-     */
-    public static final int ARTICLE_STATUS_DRAFT = 1;
+
     /**
      * 文章是正常分布状态
      */
@@ -16,10 +13,6 @@ public class SystemConstants
     */
     public static final int CATEGORY_STATUS_NORMAL = 0;
 
-    /**
-     * 分类状态异常
-     */
-    public static final int CATEGORY_STATUS_DISABLED = 1;
 
     /**
      * 文章列表当前查询页数
@@ -30,5 +23,12 @@ public class SystemConstants
      * 文章列表每页显示的数据条数
      */
     public static final int ARTICLE_STATUS_SIZE = 10;
+
+    /**
+     *  友链状态为审核通过
+     */
+    public static final int LINK_STATUS_NORMAL = 0;
+
+
 
 }

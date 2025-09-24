@@ -62,7 +62,7 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article> impl
     public ResponseResult articleList(Integer pageNum, Integer pageSize, Long categoryId) {
         //查询条件
         LambdaQueryWrapper<Article> lambdaQueryWrapper = new LambdaQueryWrapper<>();
-        //如果前端传了 categoryId这个参数，那么查询的时候要和传入的相同。第二个参数是数据表的文章id，第三个字段是前端传来的文章id
+        //如果前端传了categoryId这个参数，那么查询的时候要和传入的相同。第二个参数是数据表的文章id，第三个字段是前端传来的文章id
         lambdaQueryWrapper.eq(Objects.nonNull(categoryId) && categoryId > 0,
                 Article::getCategoryId, categoryId);
         //状态是正式发布的

@@ -64,7 +64,7 @@ public class ArticleController {
 
     @GetMapping("{id}")
     @Operation(summary = "获取文章详情内容")
-    public ResponseResult getArticleDetail(@PathVariable Long id) {
+    public ResponseResult getArticleDetail(@PathVariable("id") Long id) {
         return articleService.getArticleDetail(id);
     }
 }
