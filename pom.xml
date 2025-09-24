@@ -29,7 +29,7 @@
         <mybatis>3.5.9</mybatis>
         <aliyun.sdk.oss>3.17.4</aliyun.sdk.oss>
         <swagger>3.0.0</swagger>
-        <jjwt>0.9.1</jjwt>
+        <jjwt>0.11.5</jjwt>
         <easyexcel>3.1.0</easyexcel>
         <knife4j>3.0.3</knife4j>
 
@@ -67,11 +67,25 @@
                 <version>${fastjson}</version>
             </dependency>
 
+
+
             <!--jjwt-->
             <dependency>
                 <groupId>io.jsonwebtoken</groupId>
-                <artifactId>jjwt</artifactId>
+                <artifactId>jjwt-api</artifactId>
                 <version>${jjwt}</version>
+            </dependency>
+            <dependency>
+                <groupId>io.jsonwebtoken</groupId>
+                <artifactId>jjwt-impl</artifactId>
+                <version>${jjwt}</version>
+                <scope>runtime</scope>
+            </dependency>
+            <dependency>
+                <groupId>io.jsonwebtoken</groupId>
+                <artifactId>jjwt-jackson</artifactId> <!-- 用于JSON处理 -->
+                <version>${jjwt}</version>
+                <scope>runtime</scope>
             </dependency>
 
             <!--mybatisPlus-->
