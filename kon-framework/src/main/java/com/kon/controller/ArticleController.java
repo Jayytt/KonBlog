@@ -1,16 +1,9 @@
 package com.kon.controller;
 
-import com.kon.domain.entity.Article;
-
-import com.kon.domain.entity.Category;
-import com.kon.domain.vo.ArticleListVo;
-import com.kon.domain.vo.PageVo;
-import com.kon.mapper.ArticleMapper;
 import com.kon.mapper.CategoryMapper;
 import com.kon.result.ResponseResult;
 import com.kon.service.IArticleService;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
+
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.extern.slf4j.Slf4j;
@@ -57,7 +50,9 @@ public class ArticleController {
            return responseResult;*/
 
     @GetMapping("/articleList")
+    @Operation(summary = "分页查询文章列表")
     public ResponseResult articleList(Integer pageNum, Integer pageSize, Long categoryId) {
+
         return articleService.articleList(pageNum, pageSize, categoryId);
 
 }
@@ -65,6 +60,7 @@ public class ArticleController {
     @GetMapping("{id}")
     @Operation(summary = "获取文章详情内容")
     public ResponseResult getArticleDetail(@PathVariable("id") Long id) {
+        log.info("获取到的文章id,{}",id);
         return articleService.getArticleDetail(id);
     }
 }

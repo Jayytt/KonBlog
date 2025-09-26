@@ -35,6 +35,7 @@ public class LinkController {
     @Operation(summary = "查询所有友链")
     @GetMapping("getAllLink")
     public ResponseResult<List<LinkVo>> getAllLink() {
+        log.info("获取所有友链");
         return linkService.getAllLink();
     }
 }

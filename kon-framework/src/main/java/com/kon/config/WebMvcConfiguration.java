@@ -1,5 +1,6 @@
 package com.kon.config;
 
+
 import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.info.Contact;
 import io.swagger.v3.oas.models.info.Info;
@@ -10,11 +11,14 @@ import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
+
+
 /**
  * 配置类：WebMvc + Knife4j（OpenAPI 3）接口文档
  */
 @Configuration
 @Slf4j
+
 public class WebMvcConfiguration implements WebMvcConfigurer {
 
     /**
@@ -30,9 +34,9 @@ public class WebMvcConfiguration implements WebMvcConfigurer {
                 .description("轻音博客项目的后端API文档，包含用户、文章、评论等核心接口") // 文档描述
                 // 可选：添加联系人信息
                 .contact(new Contact()
-                        .name("开发者名称")
-                        .email("开发者邮箱@xxx.com")
-                        .url("项目地址（如GitHub）"));
+                        .name("开发者名称:Yui")
+                        .email("开发者邮箱:ikuralila@stud.tjut.edu.cn")
+                        .url("项目地址:https://github.com/Jayytt/KonBlog"));
 
         // 返回 OpenAPI 配置（Knife4j 会自动识别该 Bean）
         return new OpenAPI().info(info);

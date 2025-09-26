@@ -1,10 +1,6 @@
 package com.kon.controller;
-
-
 import com.kon.result.ResponseResult;
 import com.kon.service.ICategoryService;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;

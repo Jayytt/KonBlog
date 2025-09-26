@@ -17,8 +17,6 @@ import java.util.Objects;
 @RequiredArgsConstructor
 public class UserDetailServiceImpl implements UserDetailsService {
 
-
-
     private final UserMapper userMapper;
 
     @Override
@@ -34,11 +32,8 @@ public class UserDetailServiceImpl implements UserDetailsService {
             throw new UsernameNotFoundException(username);
 //            throw new RuntimeException("用户不存在")
         }
-
          //TODO 查询权限信息 并且封装
         //返回查询到的用户信息。
-
-
         return new LoginUser(user);
     }
 }

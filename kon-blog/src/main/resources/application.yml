@@ -27,18 +27,30 @@ logging:
   pattern:
     dateformat: HH:mm:ss
 
+springdoc:
+  swagger-ui:
+    path: /swagger-ui.html
+    tags-sorter: alpha
+    operations-sorter: alpha
+  api-docs:
+    path: /v3/api-docs
+  group-configs:
+    - group: 'default'
+      paths-to-match: '/**'
+      #生成文档所需的扫包路径，一般为启动类目录
+      packages-to-scan: com.kon.controller
+
+
+#knife4j配置
 knife4j:
+  #是否启用增强设置
   enable: true
-  openapi:
-    title: 轻音博客接口文档
-    description: "轻音博客接口文档"
-    email: Jay@kon.cn
-    concat: Yui
-    url: https://www.kon.cn
-    version: v1.0.0
-    group:
-      default:
-        group-name: default
-        api-rule: package
-        api-rule-resources:
-          - com.kon.controller
+  #开启生产环境屏蔽
+  production: false
+  #是否启用登录认证
+  setting:
+    language: zh_cn
+    enable-version: true
+    enable-swagger-models: true
+    swagger-model-name: 轻音博客
+
