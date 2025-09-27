@@ -2,6 +2,10 @@ package com.kon.enums;
 
 import lombok.Getter;
 
+/**
+ * @author 35238
+ * @date 2023/7/19 0019 12:52
+ */
 @Getter
 public enum AppHttpCodeEnum {
     // 成功
@@ -13,6 +17,7 @@ public enum AppHttpCodeEnum {
     USERNAME_EXIST(501, "用户名已存在"),
     PHONENUMBER_EXIST(502, "手机号已存在"), EMAIL_EXIST(503, "邮箱已存在"),
     REQUIRE_USERNAME(504, "必需填写用户名"),
+    CONTENT_NOT_NULL(506, "发送的评论内容不能为空"),
     LOGIN_ERROR(505, "用户名或密码错误");
     int code;
     String msg;

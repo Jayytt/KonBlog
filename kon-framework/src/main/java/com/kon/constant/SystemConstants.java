@@ -11,7 +11,7 @@ public class SystemConstants
     /**
     * 分类状态正常
     */
-    public static final int CATEGORY_STATUS_NORMAL = 0;
+    public static final String CATEGORY_STATUS_NORMAL = "0";
 
 
     /**
@@ -27,7 +27,13 @@ public class SystemConstants
     /**
      *  友链状态为审核通过
      */
-    public static final int LINK_STATUS_NORMAL = 0;
+    public static final String LINK_STATUS_NORMAL = "0";
+
+    /**
+     * 评论区的某条评论是根评论
+     */
+    public static final String COMMENT_ROOT = "-1";
+
 
 
 

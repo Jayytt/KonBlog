@@ -1,0 +1,40 @@
+package com.kon.controller;
+
+
+import com.kon.domain.entity.Comment;
+import com.kon.result.ResponseResult;
+import com.kon.service.ICommentService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
+
+/**
+ * <p>
+ * 评论表 前端控制器
+ * </p>
+ *
+ * @author 平泽唯
+ * @since 2025-09-27
+ */
+@RestController
+@RequestMapping("/comment")
+@Tag(name = "评论相关接口")
+public class CommentController {
+
+    @Autowired
+    private ICommentService commentService;
+
+    @GetMapping("/commentList")
+    @Operation(summary = "获取评论列表")
+    public ResponseResult commentList(Integer pageNum, Integer pageSize, Integer articleId) {
+        return commentService.commentList(pageNum, pageSize, articleId);
+    }
+
+    @PostMapping
+    @Operation(summary = "发表评论")
+    private ResponseResult addComment(@RequestBody Comment comment) {
+        return commentService.addComment(comment);
+    }
+
+}

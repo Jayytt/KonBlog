@@ -62,7 +62,7 @@ public class SecurityConfig {
                         //退出登录必要要已登录
                         .requestMatchers("/logout").authenticated()
                         // 友链查询接口需要认证
-                        .requestMatchers("/link/getAllLink").authenticated()
+//                        .requestMatchers("/link/getAllLink").authenticated()
                         // 其他所有请求允许访问
                         .anyRequest().permitAll()
                 )
