@@ -34,7 +34,7 @@ public class CommentServiceImpl extends ServiceImpl<CommentMapper, Comment> impl
     private IUserService userService;
 
     @Override
-    public ResponseResult commentList(Integer pageNum, Integer pageSize, Integer articleId) {
+    public ResponseResult commentList(String commetnType,Integer pageNum, Integer pageSize, Long articleId) {
 
         LambdaQueryWrapper<Comment> queryWrapper = new LambdaQueryWrapper<>();
 
@@ -43,6 +43,9 @@ public class CommentServiceImpl extends ServiceImpl<CommentMapper, Comment> impl
 
         //对评论区的某条评论的rootID进行判断，如果为-1，就表示是根评论。SystemCanstants是我们写的解决字面值的类
         queryWrapper.eq(Comment::getRootId, SystemConstants.COMMENT_ROOT);
+
+        //文章的评论，避免得到友链的评论
+        queryWrapper.eq(Comment::getType,commetnType);
 
         //分页查询。查的是整个评论区的每一条评论
         Page<Comment> page = new Page<>(pageNum, pageSize);
