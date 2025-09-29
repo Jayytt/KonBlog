@@ -54,3 +54,8 @@ knife4j:
     enable-swagger-models: true
     swagger-model-name: 轻音博客
 
+myoss:
+  xxaccessKey: jOwxf6FBvIhmNal06W583zrZssSlKiAKIYzSHkPM
+  xxsecretKey: k8b7j-2ohq_hbqQstQUrpT-wJGHriLxUbAAGSQ9j
+  xxbucket: kon-blog
+

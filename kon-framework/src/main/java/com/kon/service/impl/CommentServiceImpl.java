@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.kon.constant.SystemConstants;
 import com.kon.domain.entity.Comment;
+import com.kon.domain.entity.User;
 import com.kon.domain.vo.CommentVo;
 import com.kon.domain.vo.PageVo;
 import com.kon.enums.AppHttpCodeEnum;
@@ -94,25 +95,24 @@ public class CommentServiceImpl extends ServiceImpl<CommentMapper, Comment> impl
 
     //封装响应返回。CommentVo、BeanCopyUtils、ResponseResult、PageVo是我们写的类
     private List<CommentVo> xxToCommentList(List<Comment> list) {
-        //获取评论区的所有评论
         List<CommentVo> commentVos = BeanCopyUtils.copyBeanList(list, CommentVo.class);
-        //遍历(可以用for循环，也可以用stream流)。由于封装响应好的数据里面没有username字段，所以我们还不能返回给前端。这个遍历就是用来得到username字段
+
         for (CommentVo commentVo : commentVos) {
-            //
-            //需要根据commentVo类里面的createBy字段，然后用createBy字段去查询user表的nickname字段(子评论的用户昵称)
-            String nickName = userService.getById(commentVo.getCreateBy()).getNickName();
-            //然后把nickname字段(发这条子评论的用户昵称)的数据赋值给commentVo类的username字段
+            // 1. 获取评论作者昵称（增加非空判断）
+            Long createBy = commentVo.getCreateBy();
+            User user = userService.getById(createBy);
+            String nickName = (user != null) ? user.getNickName() : "未知用户"; // 空值处理
             commentVo.setUsername(nickName);
 
-            //查询根评论的用户昵称。怎么判断是根评论的用户呢，判断toCommentId为1，就表示这条评论是根评论
+            // 2. 获取被回复用户昵称（增加非空判断）
             if (commentVo.getToCommentUserId() != -1) {
-                String toCommentUserName = userService.getById(commentVo.getToCommentUserId()).getNickName();
-                //然后把nickname字段(发这条根评论的用户昵称)的数据赋值给commentVo类的toCommentUserName字段
+                Long toCommentUserId = commentVo.getToCommentUserId();
+                User toUser = userService.getById(toCommentUserId);
+                String toCommentUserName = (toUser != null) ? toUser.getNickName() : "未知用户"; // 空值处理
                 commentVo.setToCommentUserName(toCommentUserName);
             }
         }
 
-        //返回给前端
         return commentVos;
     }
 

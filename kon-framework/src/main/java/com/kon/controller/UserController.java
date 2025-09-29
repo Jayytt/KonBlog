@@ -1,8 +1,15 @@
 package com.kon.controller;
 
 
+import com.kon.domain.entity.User;
+import com.kon.result.ResponseResult;
+import com.kon.service.IUserService;
+import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import org.springframework.web.bind.annotation.RequestMapping;
+import lombok.extern.slf4j.Slf4j;
+import org.apache.coyote.Response;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
 
 import org.springframework.stereotype.Controller;
 
@@ -14,9 +21,26 @@ import org.springframework.stereotype.Controller;
  * @author 平泽唯
  * @since 2025-09-24
  */
-@Controller
+@Slf4j
+@RestController
 @RequestMapping("/user")
 @Tag(name = "用户相关接口")
 public class UserController {
 
+    @Autowired
+    private IUserService userService;
+
+    @GetMapping("/userInfo")
+    @Operation(summary = "查询个人信息")
+    public ResponseResult UserInfo() {
+        log.info("查询个人信息");
+        return userService.UserInfo();
+    }
+
+    @PutMapping("/userInfo")
+    @Operation(summary = "更新个人信息")
+    public ResponseResult  updateUserInfo(@RequestBody User user){
+        //更新个人信息
+        return userService.updateUserInfo(user);
+    }
 }
