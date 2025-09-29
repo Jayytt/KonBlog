@@ -1,4 +1,5 @@
 package com.kon.controller;
+import com.kon.annotation.MySystemLog;
 import com.kon.result.ResponseResult;
 import com.kon.service.ICategoryService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -28,6 +29,7 @@ public class CategoryController {
 
     @Operation(summary = "查询分类列表")
     @GetMapping("getCategoryList")
+    @MySystemLog(businessName = "查询分类列表")//自定义日志注解
     public ResponseResult getCategoryList() {
         return categoryService.getCategoryList();
     }

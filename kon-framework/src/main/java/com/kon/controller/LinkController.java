@@ -1,6 +1,7 @@
 package com.kon.controller;
 
 
+import com.kon.annotation.MySystemLog;
 import com.kon.domain.entity.Link;
 import com.kon.domain.vo.LinkVo;
 import com.kon.result.ResponseResult;
@@ -34,6 +35,7 @@ public class LinkController {
 
     @Operation(summary = "查询所有友链")
     @GetMapping("getAllLink")
+    @MySystemLog(businessName = "查询所有友链")//自定义日志注解
     public ResponseResult<List<LinkVo>> getAllLink() {
         log.info("获取所有友链");
         return linkService.getAllLink();

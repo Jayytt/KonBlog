@@ -1,5 +1,6 @@
 package com.kon.controller;
 
+import com.kon.annotation.MySystemLog;
 import com.kon.domain.entity.User;
 import com.kon.enums.AppHttpCodeEnum;
 import com.kon.exception.SystemException;
@@ -30,6 +31,7 @@ public class BlogLoginController {
 
     @PostMapping("/login")
     @Operation(summary = "用户登录")
+    @MySystemLog(businessName = "用户登录")//自定义日志注解
     public ResponseResult login(@RequestBody User user) {
         //如果登录时没有传入用户名
         if(!StringUtils.hasText(user.getUserName())) {

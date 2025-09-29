@@ -1,6 +1,7 @@
 package com.kon.controller;
 
 
+import com.kon.annotation.MySystemLog;
 import com.kon.constant.SystemConstants;
 import com.kon.domain.entity.Comment;
 import com.kon.result.ResponseResult;
@@ -28,14 +29,16 @@ public class CommentController {
 
     @GetMapping("/commentList")
     @Operation(summary = "获取评论列表")
-    public ResponseResult commentList(String commentType,Integer pageNum, Integer pageSize,Long articleId) {
-        return commentService.commentList(SystemConstants.ARTICLE_COMMENT,pageNum, pageSize, articleId);
+    @MySystemLog(businessName = "获取评论列表")//自定义日志注解
+    public ResponseResult commentList(String commentType, Integer pageNum, Integer pageSize, Long articleId) {
+        return commentService.commentList(SystemConstants.ARTICLE_COMMENT, pageNum, pageSize, articleId);
     }
 
     @GetMapping("/linkCommentList")
     @Operation(summary = "获取友链评论列表")
-    public ResponseResult linkCommentList(String commentType,Integer pageNum, Integer pageSize, Long articleId) {
-        return commentService.commentList(SystemConstants.LINK_COMMENT,pageNum, pageSize, articleId);
+    @MySystemLog(businessName = "获取友链评论列表")//自定义日志注解
+    public ResponseResult linkCommentList(String commentType, Integer pageNum, Integer pageSize, Long articleId) {
+        return commentService.commentList(SystemConstants.LINK_COMMENT, pageNum, pageSize, articleId);
     }
 
     @PostMapping

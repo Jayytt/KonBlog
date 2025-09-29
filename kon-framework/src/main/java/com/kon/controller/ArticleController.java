@@ -1,5 +1,6 @@
 package com.kon.controller;
 
+import com.kon.annotation.MySystemLog;
 import com.kon.mapper.CategoryMapper;
 import com.kon.result.ResponseResult;
 import com.kon.service.IArticleService;
@@ -26,6 +27,7 @@ public class ArticleController {
 
     @GetMapping("/hotArticleList")
     @Operation(summary = "热门文章列表")
+    @MySystemLog(businessName = "热门文章列表")//自定义日志注解
     public ResponseResult hotArticleList() {
         ResponseResult result = articleService.hotArticleList();
         return result;
