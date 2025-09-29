@@ -49,7 +49,7 @@ public class SecurityConfig {
                 .and()
                 .authorizeHttpRequests()
                 .requestMatchers("/login").anonymous()
-                .requestMatchers("/user/userInfo", "/logout", "/comment","upload").authenticated()
+                .requestMatchers("/user/userInfo", "/logout", "/comment").authenticated()
                 .anyRequest().permitAll()
                 .and()
                 .exceptionHandling()

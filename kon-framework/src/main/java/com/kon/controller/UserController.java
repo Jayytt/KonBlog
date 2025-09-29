@@ -34,7 +34,7 @@ public class UserController {
     @Operation(summary = "查询个人信息")
     public ResponseResult UserInfo() {
         log.info("查询个人信息");
-        return userService.UserInfo();
+        return userService.userInfo();
     }
 
     @PutMapping("/userInfo")
@@ -42,5 +42,12 @@ public class UserController {
     public ResponseResult  updateUserInfo(@RequestBody User user){
         //更新个人信息
         return userService.updateUserInfo(user);
+    }
+
+    @PostMapping("/register")
+    @Operation(summary = "用户注册")
+    public ResponseResult register(@RequestBody User user){
+        log.info("用户注册:{}",user);
+        return userService.register(user);
     }
 }

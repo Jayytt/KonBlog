@@ -14,8 +14,11 @@ import com.kon.result.ResponseResult;
  */
 public interface IUserService extends IService<User> {
     /*用户信息查询*/
-    ResponseResult UserInfo();
+    ResponseResult userInfo();
 
     /*更新用户信息*/
     ResponseResult updateUserInfo(User user);
+
+    /*用户注册*/
+    ResponseResult register(User user);
 }

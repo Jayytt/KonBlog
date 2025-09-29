@@ -1,8 +1,6 @@
 package com.kon.domain.entity;
 
-import com.baomidou.mybatisplus.annotation.TableName;
-import com.baomidou.mybatisplus.annotation.IdType;
-import com.baomidou.mybatisplus.annotation.TableId;
+import com.baomidou.mybatisplus.annotation.*;
 
 import java.io.Serial;
 import java.time.LocalDateTime;
@@ -30,7 +28,8 @@ public class User implements Serializable {
     /**
      * 主键
      */
-    @TableId(value = "id", type = IdType.AUTO)
+    //主键，禁用雪花算法，使用mysql的主键自增策略
+    @TableId(type = IdType.AUTO)
     private Long id;
 
     /**
