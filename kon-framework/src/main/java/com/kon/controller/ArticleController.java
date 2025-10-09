@@ -65,4 +65,11 @@ public class ArticleController {
         log.info("获取到的文章id,{}",id);
         return articleService.getArticleDetail(id);
     }
+
+    @PutMapping("/updateViewCount/{id}")
+    @Operation(summary = "根据文章id从mysql查询文章")
+    @MySystemLog(businessName = "根据文章id从mysql查询文章")//接口描述，用于'日志记录'功能
+    public ResponseResult updateViewCount(@PathVariable("id") Long id){
+        return articleService.updateViewCount(id);
+    }
 }

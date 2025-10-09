@@ -28,7 +28,7 @@ public class CategoryController {
     private ICategoryService categoryService;
 
     @Operation(summary = "查询分类列表")
-    @GetMapping("getCategoryList")
+    @GetMapping("/getCategoryList")
     @MySystemLog(businessName = "查询分类列表")//自定义日志注解
     public ResponseResult getCategoryList() {
         return categoryService.getCategoryList();

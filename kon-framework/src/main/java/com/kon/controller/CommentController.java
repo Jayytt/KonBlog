@@ -43,7 +43,7 @@ public class CommentController {
 
     @PostMapping
     @Operation(summary = "发表评论")
-    private ResponseResult addComment(@RequestBody Comment comment) {
+    public ResponseResult addComment(@RequestBody Comment comment) {
         return commentService.addComment(comment);
     }
 

@@ -27,7 +27,7 @@ import java.util.stream.Collectors;
  * @author 35238
  * @date 2023/7/24 0024 23:08
  */
-@Service("commentService")
+@Service
 public class CommentServiceImpl extends ServiceImpl<CommentMapper, Comment> implements ICommentService {
 
     @Autowired

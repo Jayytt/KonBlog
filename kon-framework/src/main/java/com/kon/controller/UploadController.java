@@ -24,7 +24,6 @@ public class UploadController {
 
     @PostMapping("/upload")
     @Operation(summary = "图片上传")
-    @MySystemLog(businessName = "图片上传")//自定义日志注解
     //MultipartFile是spring提供的接口，ResponseResult是我们在huanf-framework写的实体类
     public ResponseResult uploadImg(MultipartFile img){
         //图片上传到七牛云
