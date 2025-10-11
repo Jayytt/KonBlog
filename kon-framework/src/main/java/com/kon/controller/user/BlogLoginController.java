@@ -1,4 +1,4 @@
-package com.kon.controller;
+package com.kon.controller.user;
 
 import com.kon.annotation.MySystemLog;
 import com.kon.domain.entity.User;
@@ -6,7 +6,6 @@ import com.kon.enums.AppHttpCodeEnum;
 import com.kon.exception.SystemException;
 import com.kon.result.ResponseResult;
 import com.kon.service.BlogLoginService;
-import io.netty.util.internal.StringUtil;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.extern.slf4j.Slf4j;
@@ -26,7 +25,6 @@ import org.springframework.web.bind.annotation.RestController;
 public class BlogLoginController {
 
     @Autowired
-    //BlogLoginService是我们在service目录写的接口
     private BlogLoginService blogLoginService;
 
     @PostMapping("/login")

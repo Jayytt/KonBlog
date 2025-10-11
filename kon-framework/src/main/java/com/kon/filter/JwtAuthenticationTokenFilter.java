@@ -27,11 +27,10 @@ import java.util.Objects;
  * @date 2023/7/23 0023 13:24
  */
 @Component
-//博客前台的登录认证过滤器。OncePerRequestFilter是springsecurity提供的类
+//OncePerRequestFilter是springsecurity提供的类
 public class JwtAuthenticationTokenFilter extends OncePerRequestFilter {
 
     @Autowired
-    //RedisCache是我们在huanf-framework工程写的工具类，用于操作redis
     private RedisCache redisCache;
 
     @Override
@@ -60,7 +59,7 @@ public class JwtAuthenticationTokenFilter extends OncePerRequestFilter {
         String userid = claims.getSubject();
 
         //在redis中，通过key来获取value，注意key我们是加过前缀的，取的时候也要加上前缀
-        LoginUser loginUser = redisCache.getCacheObject("bloglogin:" + userid);
+        LoginUser loginUser = redisCache.getCacheObject("login:" + userid);
         //如果在redis获取不到值，说明登录是过期了，需要重新登录
         if(Objects.isNull(loginUser)){
             ResponseResult result = ResponseResult.errorResult(AppHttpCodeEnum.NEED_LOGIN);

@@ -1,6 +1,7 @@
 package com.kon.domain.entity;
 
-import com.kon.domain.entity.User;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;

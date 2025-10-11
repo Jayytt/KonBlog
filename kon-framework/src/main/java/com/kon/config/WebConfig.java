@@ -41,8 +41,9 @@ public class WebConfig implements WebMvcConfigurer {
     }
 
     //-----------------------------------FastJson配置-----------------------------------------
+/*
 
-   /* @Bean//使用@Bean注入fastJsonHttpMessageConvert
+    @Bean//使用@Bean注入fastJsonHttpMessageConvert
     public HttpMessageConverter fastJsonHttpMessageConverters() {
         //1.需要定义一个Convert转换消息的对象
         FastJsonHttpMessageConverter fastConverter = new FastJsonHttpMessageConverter();
@@ -55,9 +56,10 @@ public class WebConfig implements WebMvcConfigurer {
         fastJsonConfig.setSerializeConfig(SerializeConfig.globalInstance);
         fastConverter.setFastJsonConfig(fastJsonConfig);
         return fastConverter;
-    }*/
+    }
+*/
 
-   /* @Override
+    @Override
     //配置消息转换器
     public void configureMessageConverters(List<HttpMessageConverter<?>> converters) {
         FastJsonHttpMessageConverter converter = new FastJsonHttpMessageConverter();
@@ -70,9 +72,9 @@ public class WebConfig implements WebMvcConfigurer {
         converter.setDefaultCharset(StandardCharsets.UTF_8);
         converters.add(new ByteArrayHttpMessageConverter()); // 增加二进制转换器
         converters.add(converter);
-        converters.add(fastJsonHttpMessageConverters());
+//        converters.add(fastJsonHttpMessageConverters());
 
-    }*/
+    }
 
 //--------------------------------------------------------------------------------------
 

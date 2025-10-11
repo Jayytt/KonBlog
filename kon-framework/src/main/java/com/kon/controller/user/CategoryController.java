@@ -1,4 +1,4 @@
-package com.kon.controller;
+package com.kon.controller.user;
 import com.kon.annotation.MySystemLog;
 import com.kon.result.ResponseResult;
 import com.kon.service.ICategoryService;
@@ -8,7 +8,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RestController;
 
 /**

@@ -1,8 +1,7 @@
-package com.kon.controller;
+package com.kon.controller.user;
 
 
 import com.kon.annotation.MySystemLog;
-import com.kon.domain.entity.Link;
 import com.kon.domain.vo.LinkVo;
 import com.kon.result.ResponseResult;
 import com.kon.service.ILinkService;

@@ -6,6 +6,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -44,34 +45,32 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
-                .csrf().disable()
-                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-                .and()
-                .authorizeHttpRequests()
-                // 允许匿名访问的路径
-                .requestMatchers("/login").anonymous()
-                // 允许所有人访问的 Swagger 相关路径
-                .requestMatchers(
-                        "/doc.html",
-                        "/webjars/**",
-                        "/v3/api-docs/**",
-                        "/swagger-resources",
-                        "/swagger-resources/**",
-                        "/swagger-ui.html",
-                        "/swagger-ui/**"
-                ).permitAll()
-                // 需要认证的路径
-                .requestMatchers("/user/userInfo", "/logout", "/comment").authenticated()
-                // 其他所有请求都允许访问
-                .anyRequest().permitAll()
-                .and()
-                .exceptionHandling()
-                .authenticationEntryPoint(authenticationEntryPoint)
-                .accessDeniedHandler(accessDeniedHandler);
-
-        http.logout().disable();
-        http.addFilterBefore(jwtAuthenticationTokenFilter, UsernamePasswordAuthenticationFilter.class);
-        http.cors();
+                // 关闭 CSRF
+                .csrf(AbstractHttpConfigurer::disable)
+                // 无状态会话
+                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                // 授权配置
+                .authorizeHttpRequests(auth -> auth
+                                // 如果需要，可以在这里添加需要认证的路径
+//                        .requestMatchers("/user/userInfo", "/logout", "/comment").authenticated()
+                                //允许匿名访问的路径
+                                .requestMatchers("/user/login").anonymous()
+                                // 其他所有请求都允许访问
+                                .anyRequest().permitAll()
+//                        .anyRequest().authenticated()
+                )
+                // 异常处理
+                .exceptionHandling(exception -> exception
+                        .authenticationEntryPoint(authenticationEntryPoint)
+                        .accessDeniedHandler(accessDeniedHandler)
+                )
+                // 禁用默认注销
+                .logout(AbstractHttpConfigurer::disable)
+                // 添加 JWT 过滤器
+                .addFilterBefore(jwtAuthenticationTokenFilter, UsernamePasswordAuthenticationFilter.class)
+                // 允许跨域
+                .cors(cors -> {
+                });
 
         return http.build();
     }

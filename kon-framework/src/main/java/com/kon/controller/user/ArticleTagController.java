@@ -1,4 +1,4 @@
-package com.kon.controller;
+package com.kon.controller.user;
 
 
 import org.springframework.web.bind.annotation.RequestMapping;
