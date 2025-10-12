@@ -40,4 +40,7 @@ public class CommentVo {
 
     //查询子评论
     private List<CommentVo> children;
+
+    //头像
+    private String avatar;
 }

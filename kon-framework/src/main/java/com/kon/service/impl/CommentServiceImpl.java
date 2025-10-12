@@ -17,13 +17,16 @@ import com.kon.service.IUserService;
 import com.kon.utils.BeanCopyUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 
-import java.util.Comparator;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 /**
+ * 评论服务实现类
+ *
  * @author 35238
  * @date 2023/7/24 0024 23:08
  */
@@ -31,40 +34,50 @@ import java.util.stream.Collectors;
 public class CommentServiceImpl extends ServiceImpl<CommentMapper, Comment> implements ICommentService {
 
     @Autowired
-    //根据userid查询用户信息，也就是查username
     private IUserService userService;
 
     @Override
-    public ResponseResult commentList(String commetnType,Integer pageNum, Integer pageSize, Long articleId) {
-
+    public ResponseResult commentList(String commentType, Integer pageNum, Integer pageSize, Long articleId) {
+        // 1. 查询根评论（分页）
         LambdaQueryWrapper<Comment> queryWrapper = new LambdaQueryWrapper<>();
-
-        //对articleId进行判断，作用是得到指定的文章
-        queryWrapper.eq(Comment::getArticleId, articleId);
-
-        //对评论区的某条评论的rootID进行判断，如果为-1，就表示是根评论。SystemCanstants是我们写的解决字面值的类
+        // 筛选指定文章的评论（文章评论才需要，友链评论可能不需要）
+        queryWrapper.eq(articleId != null, Comment::getArticleId, articleId);
+        // 根评论的rootId为系统定义的根标识（通常为-1）
         queryWrapper.eq(Comment::getRootId, SystemConstants.COMMENT_ROOT);
+        // 筛选评论类型（文章/友链）
+        queryWrapper.eq(Comment::getType, commentType);
+        // 数据库层面排序，替代内存排序，提升性能
+        queryWrapper.orderByDesc(Comment::getCreateTime);
 
-        //文章的评论，避免得到友链的评论
-        queryWrapper.eq(Comment::getType,commetnType);
-
-        //分页查询。查的是整个评论区的每一条评论
         Page<Comment> page = new Page<>(pageNum, pageSize);
         page(page, queryWrapper);
 
-        //调用下面那个方法。根评论排序
-        List<Comment> sortedComments = page.getRecords().stream()
-                .sorted(Comparator.comparing(Comment::getCreateTime).reversed())
-                .collect(Collectors.toList());
-        List<CommentVo> commentVoList = xxToCommentList(sortedComments);
+        // 2. 转换为VO并补充用户信息（根评论）
+        List<CommentVo> commentVoList = convertToCommentVoList(page.getRecords());
 
-        //遍历(可以用for循环，也可以用stream流)。查询子评论(注意子评论只查到二级评论，不再往深查)
-        for (CommentVo commentVo : commentVoList) {
-            //查询对应的子评论
-            List<CommentVo> children = getChildren(commentVo.getId());
-            //把查到的children子评论集的集合，赋值给commentVo类的children字段
-            commentVo.setChildren(children);
+        // 3. 批量查询所有子评论（优化N+1查询问题）
+        if (!CollectionUtils.isEmpty(commentVoList)) {
+            // 获取所有根评论ID，用于批量查询子评论
+            List<Long> rootIds = commentVoList.stream()
+                    .map(CommentVo::getId)
+                    .collect(Collectors.toList());
 
+            // 批量查询所有子评论
+            List<Comment> allChildren = list(new LambdaQueryWrapper<Comment>()
+                    .in(Comment::getRootId, rootIds)
+                    .orderByDesc(Comment::getCreateTime));
+
+            // 转换子评论为VO并补充用户信息
+            List<CommentVo> allChildrenVo = convertToCommentVoList(allChildren);
+
+            // 按rootId分组，便于快速匹配
+            Map<Long, List<CommentVo>> childrenGroup = allChildrenVo.stream()
+                    .collect(Collectors.groupingBy(CommentVo::getRootId));
+
+            // 为每个根评论设置子评论
+            for (CommentVo commentVo : commentVoList) {
+                commentVo.setChildren(childrenGroup.getOrDefault(commentVo.getId(), List.of()));
+            }
         }
 
         return ResponseResult.okResult(new PageVo(commentVoList, page.getTotal()));
@@ -72,49 +85,56 @@ public class CommentServiceImpl extends ServiceImpl<CommentMapper, Comment> impl
 
     @Override
     public ResponseResult addComment(Comment comment) {
-        //评论内容不能为空
+        // 评论内容不能为空
         if (!StringUtils.hasText(comment.getContent())) {
             throw new SystemException(AppHttpCodeEnum.CONTENT_NOT_NULL);
         }
-        //mp的save方法往数据库插入数据（用户发送的评论的各个字段）
+        // 保存评论
         save(comment);
-        return null;
+        // 返回成功响应（原代码返回null，修复为正确响应）
+        return ResponseResult.okResult();
     }
 
-    //根据根评论的id，来查询对应的所有子评论(注意子评论只查到二级评论，不再往深查)
-    private List<CommentVo> getChildren(Long id) {
-        LambdaQueryWrapper<Comment> queryWrapper = new LambdaQueryWrapper<>();
-        queryWrapper.eq(Comment::getRootId, id);
-        //对子评论按照时间进行排序
-        queryWrapper.orderByDesc(Comment::getCreateTime);
-        List<Comment> comments = list(queryWrapper);
-        //调用下面那个方法
-        List<CommentVo> commentVos = xxToCommentList(comments);
-        return commentVos;
-    }
-
-    //封装响应返回。CommentVo、BeanCopyUtils、ResponseResult、PageVo是我们写的类
-    private List<CommentVo> xxToCommentList(List<Comment> list) {
-        List<CommentVo> commentVos = BeanCopyUtils.copyBeanList(list, CommentVo.class);
-
-        for (CommentVo commentVo : commentVos) {
-            // 1. 获取评论作者昵称（增加非空判断）
-            Long createBy = commentVo.getCreateBy();
-            User user = userService.getById(createBy);
-            String nickName = (user != null) ? user.getNickName() : "未知用户"; // 空值处理
-            commentVo.setUsername(nickName);
-
-            // 2. 获取被回复用户昵称（增加非空判断）
-            if (commentVo.getToCommentUserId() != -1) {
-                Long toCommentUserId = commentVo.getToCommentUserId();
-                User toUser = userService.getById(toCommentUserId);
-                String toCommentUserName = (toUser != null) ? toUser.getNickName() : "未知用户"; // 空值处理
-                commentVo.setToCommentUserName(toCommentUserName);
-            }
+    /**
+     * 将Comment列表转换为CommentVo列表，并补充用户信息（用户名、被回复用户名、头像）
+     */
+    private List<CommentVo> convertToCommentVoList(List<Comment> commentList) {
+        if (CollectionUtils.isEmpty(commentList)) {
+            return List.of();
         }
 
-        return commentVos;
+        // 1. 批量获取所有相关用户ID（创建者ID + 被回复者ID）
+        List<Long> userIds = commentList.stream()
+                .flatMap(comment -> {
+                    List<Long> ids = List.of(comment.getCreateBy());
+                    if (comment.getToCommentUserId() != -1) {
+                        ids = List.of(comment.getCreateBy(), comment.getToCommentUserId());
+                    }
+                    return ids.stream();
+                })
+                .distinct()
+                .collect(Collectors.toList());
+
+        // 2. 批量查询用户信息（优化：减少数据库查询次数）
+        Map<Long, User> userMap = userService.listByIds(userIds).stream()
+                .collect(Collectors.toMap(User::getId, user -> user));
+
+        // 3. 转换为VO并设置用户信息
+        return commentList.stream()
+                .map(comment -> {
+                    CommentVo commentVo = BeanCopyUtils.copyBean(comment, CommentVo.class);
+                    // 设置评论者信息
+                    User createUser = userMap.get(comment.getCreateBy());
+                    commentVo.setUsername(createUser != null ? createUser.getNickName() : "未知用户");
+                    commentVo.setAvatar(createUser != null ? createUser.getAvatar() : ""); // 头像设置，解决空指针
+
+                    // 设置被回复者信息（如果存在）
+                    if (comment.getToCommentUserId() != -1) {
+                        User toUser = userMap.get(comment.getToCommentUserId());
+                        commentVo.setToCommentUserName(toUser != null ? toUser.getNickName() : "未知用户");
+                    }
+                    return commentVo;
+                })
+                .collect(Collectors.toList());
     }
-
-
 }
