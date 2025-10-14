@@ -1,10 +1,12 @@
 package com.kon.service.impl;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.kon.constant.SystemConstants;
 import com.kon.domain.entity.Article;
 import com.kon.domain.entity.Category;
 import com.kon.domain.vo.CategoryVo;
+import com.kon.domain.vo.PageVo;
 import com.kon.mapper.CategoryMapper;
 import com.kon.result.ResponseResult;
 import com.kon.service.IArticleService;
@@ -13,7 +15,10 @@ import com.kon.utils.BeanCopyUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
+
 import java.util.List;
+import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -97,5 +102,29 @@ public class CategoryServiceImpl
         List<CategoryVo> categoryVos = BeanCopyUtils.copyBeanList(list, CategoryVo.class);
         return categoryVos;
     }
+
+    //----------------------------------分页查询分类列表------------------------------------------
+
+    @Override
+    public PageVo selectCategoryPage(Category category, Integer pageNum, Integer pageSize) {
+        LambdaQueryWrapper<Category> queryWrapper = new LambdaQueryWrapper<>();
+
+        queryWrapper.like(StringUtils.hasText(category.getName()),Category::getName, category.getName());
+        queryWrapper.eq(Objects.nonNull(category.getStatus()),Category::getStatus, category.getStatus());
+
+        Page<Category> page = new Page<>();
+        page.setCurrent(pageNum);
+        page.setSize(pageSize);
+        page(page,queryWrapper);
+
+        //转换成VO
+        List<Category> categories = page.getRecords();
+
+        PageVo pageVo = new PageVo();
+        pageVo.setTotal(page.getTotal());
+        pageVo.setRows(categories);
+        return pageVo;
+    }
+
 }
 
