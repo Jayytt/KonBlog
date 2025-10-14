@@ -62,17 +62,33 @@ public class BlogLoginServiceImpl implements BlogLoginService {
 
     @Override
     public ResponseResult logout() {
-        //获取token，然后解析token值获取其中的userid.SecurityContextHolder是secrity官方提供的类
-        Authentication authentication= SecurityContextHolder.getContext().getAuthentication();
-        LoginUser loginUser = (LoginUser) authentication.getPrincipal();
+        // 1. 获取当前认证信息（增加非空判断）
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication == null) {
+            // 未登录状态处理（根据业务需求决定是抛出异常还是直接返回成功）
+            return ResponseResult.okResult();
+            // 或抛出未登录异常：throw new SystemException(AppHttpCodeEnum.NOT_LOGIN);
+        }
 
-        //获取userid
+        // 2. 安全获取登录用户信息（添加类型校验）
+        Object principal = authentication.getPrincipal();
+        if (!(principal instanceof LoginUser)) {
+            // 处理principal类型不匹配的情况（可能是匿名用户或登录状态异常）
+            SecurityContextHolder.getContext().setAuthentication(null); // 清除异常状态
+            return ResponseResult.okResult();
+        }
+
+        // 3. 类型转换并获取用户ID（此时转换已安全）
+        LoginUser loginUser = (LoginUser) principal;
         Long userId = loginUser.getUser().getId();
 
-        //在redis根据key来删除用户的value值，之前存的key都是加了bloglog前缀的
-        redisCache.deleteObject("bloglogin:"+userId);
+        // 4. 清除Redis中的登录状态（确保key与登录时一致）
+        redisCache.deleteObject("bloglogin:" + userId);
+
+        // 5. 清除Security上下文（可选，登出后建议清除）
+        SecurityContextHolder.getContext().setAuthentication(null);
 
         return ResponseResult.okResult();
-
     }
+
 }

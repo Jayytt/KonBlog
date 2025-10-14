@@ -1,5 +1,7 @@
 package com.kon.controller.admin;
 
+import com.kon.domain.dto.TagListDto;
+import com.kon.domain.vo.PageVo;
 import com.kon.result.ResponseResult;
 import com.kon.service.TagService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -21,9 +23,9 @@ public class TagController {
 
     //查询标签列表
     @GetMapping("/list")
-    @Operation(summary = "查询标签列表", description = "查询标签列表")
-    public ResponseResult list(){
-        //list是mybatisplus提供的方法
-        return ResponseResult.okResult(tagService.list());
+    @Operation(summary = "查询标签列表")
+    public ResponseResult<PageVo> list(Integer pageNum, Integer pageSize, TagListDto tagListDto){
+        //pageTagList是我们在huanf-framework工程写的方法
+        return tagService.pageTagList(pageNum,pageSize,tagListDto);
     }
 }

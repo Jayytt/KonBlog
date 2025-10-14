@@ -6,6 +6,7 @@ import com.kon.result.ResponseResult;
 import com.kon.service.SystemLoginService;
 import com.kon.utils.JwtUtil;
 import com.kon.utils.RedisCache;
+import com.kon.utils.SecurityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -57,5 +58,15 @@ public class SystemLoginServiceImpl implements SystemLoginService {
         Map<String,String> map = new HashMap<>();
         map.put("token",jwt);
         return ResponseResult.okResult(map);
+    }
+
+    @Override
+    public ResponseResult logout() {
+        //获取当前登录的用户id。SecurityUtils是我们在huanf-framework工程写的类
+        Long userId = SecurityUtils.getUserId();
+
+        //删除redis中对应的值
+        redisCache.deleteObject("login:" + userId);
+        return ResponseResult.okResult();
     }
 }

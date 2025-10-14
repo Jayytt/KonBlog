@@ -1,6 +1,6 @@
 package com.kon.config;
 
-import com.kon.filter.JwtAuthenticationTokenFilter;
+import com.kon.filter.JwtAuthenticationTokenUserFilter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -18,12 +18,12 @@ import org.springframework.security.web.SecurityFilterChain;
 @Configuration
 public class SecurityConfig {
 
-    private final JwtAuthenticationTokenFilter jwtAuthenticationTokenFilter;
+    private final JwtAuthenticationTokenUserFilter jwtAuthenticationTokenFilter;
     private final AuthenticationEntryPoint authenticationEntryPoint;
     private final AccessDeniedHandler accessDeniedHandler;
 
     public SecurityConfig(
-            JwtAuthenticationTokenFilter jwtAuthenticationTokenFilter,
+            JwtAuthenticationTokenUserFilter jwtAuthenticationTokenFilter,
             AuthenticationEntryPoint authenticationEntryPoint,
             AccessDeniedHandler accessDeniedHandler
     ) {
@@ -52,12 +52,11 @@ public class SecurityConfig {
                 // 授权配置
                 .authorizeHttpRequests(auth -> auth
                                 // 如果需要，可以在这里添加需要认证的路径
-//                        .requestMatchers("/user/userInfo", "/logout", "/comment").authenticated()
+                        .requestMatchers("/user/userInfo", "/logout", "/comment","/content/tag/list").authenticated()
                                 //允许匿名访问的路径
                                 .requestMatchers("/user/login").anonymous()
                                 // 其他所有请求都允许访问
                                 .anyRequest().permitAll()
-//                        .anyRequest().authenticated()
                 )
                 // 异常处理
                 .exceptionHandling(exception -> exception

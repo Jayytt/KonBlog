@@ -28,7 +28,7 @@ import java.util.Objects;
  */
 @Component
 //OncePerRequestFilter是springsecurity提供的类
-public class JwtAuthenticationTokenFilter extends OncePerRequestFilter {
+public class JwtAuthenticationTokenUserFilter extends OncePerRequestFilter {
 
     @Autowired
     private RedisCache redisCache;
