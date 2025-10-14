@@ -3,7 +3,7 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <!--TagMapper接口的映射文件-->
-<mapper namespace="com.huanf.mapper.TagMapper">
+<mapper namespace="com.kon.mapper.TagMapper">
     <!--根据id来删除标签-->
     <update id="myUpdateById" parameterType="list">
         UPDATE

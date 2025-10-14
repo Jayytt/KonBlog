@@ -52,7 +52,7 @@ public class SecurityConfig {
                 // 授权配置
                 .authorizeHttpRequests(auth -> auth
                                 // 如果需要，可以在这里添加需要认证的路径
-                        .requestMatchers("/user/userInfo", "/logout", "/comment","/content/tag/list").authenticated()
+                        .requestMatchers("/user/userInfo", "/logout", "/comment","/content/tag/","/content/tag/list").authenticated()
                                 //允许匿名访问的路径
                                 .requestMatchers("/user/login").anonymous()
                                 // 其他所有请求都允许访问
