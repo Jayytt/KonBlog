@@ -60,7 +60,10 @@ public class CategoryServiceImpl
 
 
           return ResponseResult.okResult(categoryVOS);*/
+
+
     @Override
+    //
     public ResponseResult getCategoryList() {
         // 1. 查询所有“已发布”的文章
         LambdaQueryWrapper<Article> articleWrapper = new LambdaQueryWrapper<>();
@@ -83,6 +86,16 @@ public class CategoryServiceImpl
         // 4. 转换为VO并返回
         List<CategoryVo> categoryVos = BeanCopyUtils.copyBeanList(categories, CategoryVo.class);
         return ResponseResult.okResult(categoryVos);
+    }
+
+    //写博客-查询文章分类的接口
+    @Override
+    public List<CategoryVo> listAllCategory() {
+        LambdaQueryWrapper<Category> wrapper = new LambdaQueryWrapper<>();
+        wrapper.eq(Category::getStatus, SystemConstants.NORMAL);
+        List<Category> list = list(wrapper);
+        List<CategoryVo> categoryVos = BeanCopyUtils.copyBeanList(list, CategoryVo.class);
+        return categoryVos;
     }
 }
 

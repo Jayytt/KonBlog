@@ -4,6 +4,7 @@ import com.kon.domain.dto.AddTagDTO;
 import com.kon.domain.dto.EditTagDTO;
 import com.kon.domain.dto.TagListDTO;
 import com.kon.domain.vo.PageVo;
+import com.kon.domain.vo.TagVo;
 import com.kon.result.ResponseResult;
 import com.kon.service.TagService;
 import com.kon.utils.BeanCopyUtils;
@@ -63,5 +64,13 @@ public class TagController {
         com.kon.domain.entity.Tag tag = BeanCopyUtils.copyBean(tagDTO, com.kon.domain.entity.Tag.class);
         tagService.updateById(tag);
         return ResponseResult.okResult();
+    }
+
+
+    @GetMapping("/listAllTag")
+    @Operation(summary = "查询所有标签")
+    public ResponseResult listAllTag() {
+        List<TagVo> list = tagService.listAllTag();
+        return ResponseResult.okResult(list);
     }
 }

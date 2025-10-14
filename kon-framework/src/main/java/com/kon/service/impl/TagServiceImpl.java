@@ -6,11 +6,15 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.kon.domain.dto.TagListDTO;
 import com.kon.domain.entity.Tag;
 import com.kon.domain.vo.PageVo;
+import com.kon.domain.vo.TagVo;
 import com.kon.mapper.TagMapper;
 import com.kon.result.ResponseResult;
 import com.kon.service.TagService;
+import com.kon.utils.BeanCopyUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
+
+import java.util.List;
 
 /**
  * @author 35238
@@ -35,5 +39,15 @@ public class TagServiceImpl extends ServiceImpl<TagMapper, Tag> implements TagSe
         PageVo pageVo = new PageVo(page.getRecords(), page.getTotal());
         return ResponseResult.okResult(pageVo);
 
+    }
+
+
+    @Override
+    public List<TagVo> listAllTag() {
+        LambdaQueryWrapper<Tag> wrapper = new LambdaQueryWrapper<>();
+        wrapper.select(Tag::getId, Tag::getName);
+        List<Tag> list = list(wrapper);
+        List<TagVo> tagVos = BeanCopyUtils.copyBeanList(list, TagVo.class);
+        return tagVos;
     }
 }
