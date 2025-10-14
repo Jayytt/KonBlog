@@ -1,15 +1,16 @@
 package com.kon.controller.admin;
 
-import com.kon.domain.dto.TagListDto;
+import com.kon.domain.dto.AddTagDTO;
+import com.kon.domain.dto.TagListDTO;
 import com.kon.domain.vo.PageVo;
 import com.kon.result.ResponseResult;
 import com.kon.service.TagService;
+import com.kon.utils.BeanCopyUtils;
 import io.swagger.v3.oas.annotations.Operation;
+
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 
 @RestController
@@ -24,8 +25,16 @@ public class TagController {
     //查询标签列表
     @GetMapping("/list")
     @Operation(summary = "查询标签列表")
-    public ResponseResult<PageVo> list(Integer pageNum, Integer pageSize, TagListDto tagListDto){
+    public ResponseResult<PageVo> list(Integer pageNum, Integer pageSize, TagListDTO tagListDto) {
         //pageTagList是我们在huanf-framework工程写的方法
-        return tagService.pageTagList(pageNum,pageSize,tagListDto);
+        return tagService.pageTagList(pageNum, pageSize, tagListDto);
+    }
+
+    @PostMapping
+    @Operation(summary = "新增标签")
+    public ResponseResult add(@RequestBody AddTagDTO tagDTO) {
+        com.kon.domain.entity.Tag tag = BeanCopyUtils.copyBean(tagDTO, com.kon.domain.entity.Tag.class);
+        tagService.save(tag);
+        return ResponseResult.okResult();
     }
 }

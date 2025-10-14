@@ -3,7 +3,7 @@ package com.kon.service.impl;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.kon.domain.dto.TagListDto;
+import com.kon.domain.dto.TagListDTO;
 import com.kon.domain.entity.Tag;
 import com.kon.domain.vo.PageVo;
 import com.kon.mapper.TagMapper;
@@ -20,7 +20,7 @@ import org.springframework.util.StringUtils;
 public class TagServiceImpl extends ServiceImpl<TagMapper, Tag> implements TagService {
 
     @Override
-    public ResponseResult<PageVo> pageTagList(Integer pageNum, Integer pageSize, TagListDto tagListDto) {
+    public ResponseResult<PageVo> pageTagList(Integer pageNum, Integer pageSize, TagListDTO tagListDto) {
         LambdaQueryWrapper<Tag> queryWrapper = new LambdaQueryWrapper<>();
         //第一个参数判空，如果不为空就比较后两个参数
         queryWrapper.like(StringUtils.hasText(tagListDto.getName()), Tag::getName, tagListDto.getName());
