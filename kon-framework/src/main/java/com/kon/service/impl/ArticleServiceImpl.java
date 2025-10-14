@@ -6,15 +6,16 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 
 
 import com.kon.constant.SystemConstants;
+import com.kon.domain.dto.AddArticleDTO;
 import com.kon.domain.entity.Article;
+import com.kon.domain.entity.ArticleTag;
 import com.kon.domain.entity.Category;
-import com.kon.domain.vo.ArticleDetailVo;
-import com.kon.domain.vo.ArticleListVo;
-import com.kon.domain.vo.HotArticleVo;
-import com.kon.domain.vo.PageVo;
+import com.kon.domain.vo.*;
 import com.kon.mapper.ArticleMapper;
 import com.kon.result.ResponseResult;
+import com.kon.service.ArticleVoService;
 import com.kon.service.IArticleService;
+import com.kon.service.IArticleTagService;
 import com.kon.service.ICategoryService;
 import com.kon.utils.BeanCopyUtils;
 import com.kon.utils.RedisCache;
@@ -22,6 +23,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.ArrayList;
@@ -44,6 +46,12 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article> impl
 
 
     private final RedisCache redisCache;
+
+
+    private final IArticleTagService articleTagService;
+
+
+    private final ArticleVoService articleVoService;
 
 
     @Override
@@ -199,6 +207,24 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article> impl
         //更新redis中的浏览量，对应文章id的viewCount浏览量。article:viewCount是ViewCountRunner类里面写的
         //用户每从mysql根据文章id查询一次浏览量，那么redis的浏览量就增加1
         redisCache.incrementCacheMapValue("article:viewCount", id.toString(), 1);
+        return ResponseResult.okResult();
+    }
+
+//-------------------------------新增文章--------------------------------------
+    @Override
+    @Transactional
+    public ResponseResult add(AddArticleDTO articleDto) {
+        //添加 博客
+        ArticleVo articlevo = BeanCopyUtils.copyBean(articleDto, ArticleVo.class);
+        articleVoService.save(articlevo);
+
+
+        List<ArticleTag> articleTags = articleDto.getTags().stream()
+                .map(tagId -> new ArticleTag(articlevo.getId(), tagId))
+                .collect(Collectors.toList());
+
+        //添加 博客和标签的关联
+        articleTagService.saveBatch(articleTags);
         return ResponseResult.okResult();
     }
 }

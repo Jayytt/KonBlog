@@ -1,43 +1,30 @@
 package com.kon.domain.entity;
 
 import com.baomidou.mybatisplus.annotation.TableName;
-import com.baomidou.mybatisplus.annotation.IdType;
-import com.baomidou.mybatisplus.annotation.TableId;
-import java.io.Serializable;
-
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
-import lombok.experimental.Accessors;
+import java.io.Serializable;
 
 /**
- * <p>
- * 文章标签关联表
- * </p>
- *
- * @author 平泽唯
- * @since 2025-09-23
+ * @author 35238
+ * @date 2023/8/7 0007 15:28
  */
+@TableName(value="sg_article_tag")
 @Data
-@NoArgsConstructor
 @AllArgsConstructor
-@EqualsAndHashCode(callSuper = false)
-@Accessors(chain = true)
-@TableName("sg_article_tag")
-public class ArticleTag  {
-
+@NoArgsConstructor
+//新增博客文章
+public class ArticleTag implements Serializable {
+    private static final long serialVersionUID = 625337492348897098L;
 
     /**
      * 文章id
      */
-    @TableId(value = "article_id", type = IdType.AUTO)
     private Long articleId;
-
     /**
      * 标签id
      */
     private Long tagId;
-
 
 }

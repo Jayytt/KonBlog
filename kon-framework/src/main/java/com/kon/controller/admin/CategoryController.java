@@ -3,6 +3,7 @@ package com.kon.controller.admin;
 import com.kon.domain.vo.CategoryVo;
 import com.kon.result.ResponseResult;
 import com.kon.service.ICategoryService;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -17,6 +18,7 @@ import java.util.List;
 
 @RestController(value = "adminCategoryController")
 @RequestMapping("/content/category")
+@Tag(name = "后台分类管理相关接口")
 public class CategoryController {
 
     //---------------------------写博文-查询文章分类的接口--------------------------------

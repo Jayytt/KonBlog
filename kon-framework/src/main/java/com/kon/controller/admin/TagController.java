@@ -18,7 +18,7 @@ import java.util.List;
 
 
 @RestController
-@Tag(name = "标签模块", description = "标签相关接口")
+@Tag(name = "标签模块", description = "后台标签相关接口")
 @RequestMapping("/content/tag")
 public class TagController {
 

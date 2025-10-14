@@ -1,6 +1,7 @@
 package com.kon.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.kon.domain.dto.AddArticleDTO;
 import com.kon.domain.entity.Article;
 import com.kon.result.ResponseResult;
 
@@ -21,4 +22,7 @@ public interface IArticleService extends IService<Article> {
 
     //根据文章id从mysql查询文章
     ResponseResult updateViewCount(Long id);
+
+    //新增博客文章
+    ResponseResult add(AddArticleDTO article);
 }
