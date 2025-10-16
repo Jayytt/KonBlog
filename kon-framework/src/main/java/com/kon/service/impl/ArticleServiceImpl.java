@@ -267,8 +267,8 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article> impl
 
     @Override
     //②然后才是修改文章
-    public void edit(ArticleDTO articleDto) {
-        Article article = BeanCopyUtils.copyBean(articleDto, Article.class);
+    public void edit(ArticleDTO articleDTO) {
+        Article article = BeanCopyUtils.copyBean(articleDTO, Article.class);
         //更新博客信息
         updateById(article);
         //删除原有的 标签和博客的关联
@@ -276,8 +276,8 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article> impl
         articleTagLambdaQueryWrapper.eq(ArticleTag::getArticleId,article.getId());
         articleTagService.remove(articleTagLambdaQueryWrapper);
         //添加新的博客和标签的关联信息
-        List<ArticleTag> articleTags = articleDto.getTags().stream()
-                .map(tagId -> new ArticleTag(articleDto.getId(), tagId))
+        List<ArticleTag> articleTags = articleDTO.getTags().stream()
+                .map(tagId -> new ArticleTag(articleDTO.getId(), tagId))
                 .collect(Collectors.toList());
         articleTagService.saveBatch(articleTags);
     }
