@@ -1,10 +1,10 @@
 package com.kon.config;
-
 import com.kon.filter.JwtAuthenticationTokenUserFilter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
@@ -16,6 +16,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 import org.springframework.security.web.SecurityFilterChain;
 
 @Configuration
+@EnableMethodSecurity//开启方法级别的权限控制
 public class SecurityConfig {
 
     private final JwtAuthenticationTokenUserFilter jwtAuthenticationTokenFilter;
@@ -51,12 +52,12 @@ public class SecurityConfig {
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 // 授权配置
                 .authorizeHttpRequests(auth -> auth
-                                // 如果需要，可以在这里添加需要认证的路径
-                        .requestMatchers("/user/userInfo", "/logout", "/comment","/content/tag/","/content/tag/list").authenticated()
-                                //允许匿名访问的路径
-                                .requestMatchers("/user/login").anonymous()
-                                // 其他所有请求都允许访问
-                                .anyRequest().permitAll()
+                        // 如果需要，可以在这里添加需要认证的路径
+                        .requestMatchers("/user/userInfo", "/logout", "/comment", "/content/tag/", "/content/tag/list").authenticated()
+                        //允许匿名访问的路径
+                        .requestMatchers("/user/login").anonymous()
+                        // 其他所有请求都允许访问
+                        .anyRequest().permitAll()
                 )
                 // 异常处理
                 .exceptionHandling(exception -> exception

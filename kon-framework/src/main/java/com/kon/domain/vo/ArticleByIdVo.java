@@ -1,4 +1,4 @@
-package com.kon.domain.dto;
+package com.kon.domain.vo;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -8,12 +8,12 @@ import java.util.List;
 
 /**
  * @author 35238
- * @date 2023/8/9 0009 22:38
+ * @date 2023/8/9 0009 22:23
  */
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class ArticleDTO {
+public class ArticleByIdVo {
 
     private Long id;
     //标题

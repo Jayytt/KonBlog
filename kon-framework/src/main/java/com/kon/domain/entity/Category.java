@@ -30,7 +30,7 @@ public class Category  {
 /**
      * 状态0:正常,1禁用
      */
-    private int status;
+    private Integer status;
 //字段自增
     @TableField(fill = FieldFill.INSERT)
     private Long createBy;
