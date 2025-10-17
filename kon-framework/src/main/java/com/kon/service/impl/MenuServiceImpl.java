@@ -7,6 +7,7 @@ import com.kon.domain.entity.Menu;
 import com.kon.mapper.MenuMapper;
 import com.kon.service.MenuService;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -84,5 +85,37 @@ public class MenuServiceImpl extends ServiceImpl<MenuMapper, Menu> implements Me
                 .map(m -> m.setChildren(xxgetChildren(m,menus)))
                 .collect(Collectors.toList());
         return childrenList;
+    }
+
+    //---------------------------------查询菜单列表--------------------------------------
+
+    @Override
+    public List<Menu> selectMenuList(Menu menu) {
+
+        LambdaQueryWrapper<Menu> queryWrapper = new LambdaQueryWrapper<>();
+        //menuName模糊查询
+        queryWrapper.like(StringUtils.hasText(menu.getMenuName()),Menu::getMenuName,menu.getMenuName());
+        queryWrapper.eq(StringUtils.hasText(menu.getStatus()),Menu::getStatus,menu.getStatus());
+        //排序 parent_id和order_num
+        queryWrapper.orderByAsc(Menu::getParentId,Menu::getOrderNum);
+        List<Menu> menus = list(queryWrapper);;
+        return menus;
+    }
+
+    //-------------------------------删除菜单-是否存在子菜单-------------------------------
+
+    @Override
+    public boolean hasChild(Long menuId) {
+        LambdaQueryWrapper<Menu> queryWrapper = new LambdaQueryWrapper<>();
+        queryWrapper.eq(Menu::getParentId,menuId);
+        //若统计数量不等于 0，返回 true（存在子菜单）；否则返回 false。
+        return count(queryWrapper) != 0;
+    }
+
+    //--------------------------修改角色-根据角色id查询对应角色菜单列表树---------------------
+
+    @Override
+    public List<Long> selectMenuListByRoleId(Long roleId) {
+        return getBaseMapper().selectMenuListByRoleId(roleId);
     }
 }
