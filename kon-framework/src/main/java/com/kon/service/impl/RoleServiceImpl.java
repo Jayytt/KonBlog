@@ -1,8 +1,10 @@
 package com.kon.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.kon.constant.SystemConstants;
 import com.kon.domain.entity.Role;
 import com.kon.domain.entity.RoleMenu;
 import com.kon.domain.vo.PageVo;
@@ -93,6 +95,20 @@ public class RoleServiceImpl extends ServiceImpl<RoleMapper, Role> implements Ro
         updateById(role);
         roleMenuService.deleteRoleMenuByRoleId(role.getId());
         insertRoleMenu(role);
+    }
+
+
+    //-----------------------新增用户-①查询角色列表接口----------------------------
+
+    @Override
+    public List<Role> selectRoleAll() {
+        return list(Wrappers.<Role>lambdaQuery().eq(Role::getStatus, SystemConstants.NORMAL));
+    }
+
+    //-----------------------修改用户-①根据id查询用户信息----------------------------
+    @Override
+    public List<Long> selectRoleIdByUserId(Long userId) {
+        return getBaseMapper().selectRoleIdByUserId(userId);
     }
 }
 

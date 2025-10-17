@@ -73,4 +73,13 @@ public class RoleController {
         roleService.removeByIds(id);
         return ResponseResult.okResult();
     }
+
+    //--------------------------------新增用户---------------------------------------
+
+    @GetMapping("/listAllRole")
+    //①查询角色列表接口
+    public ResponseResult listAllRole(){
+        List<Role> roles = roleService.selectRoleAll();
+        return ResponseResult.okResult(roles);
+    }
 }

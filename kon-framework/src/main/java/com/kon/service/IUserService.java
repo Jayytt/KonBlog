@@ -21,4 +21,16 @@ public interface IUserService extends IService<User> {
 
     /*用户注册*/
     ResponseResult register(User user);
+
+    /*分页查询用户列表*/
+    ResponseResult selectUserPage(User user, Integer pageNum, Integer pageSize);
+
+    //增加用户-②新增用户
+    boolean checkUserNameUnique(String userName);
+    boolean checkPhoneUnique(User user);
+    boolean checkEmailUnique(User user);
+    ResponseResult addUser(User user);
+
+    //修改用户-②更新用户信息
+    void updateUser(User user);
 }

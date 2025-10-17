@@ -8,4 +8,6 @@ import com.kon.domain.entity.RoleMenu;
  */
 public interface RoleMenuMapper extends BaseMapper<RoleMenu> {
 
+
+
 }
