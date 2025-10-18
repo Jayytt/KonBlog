@@ -42,7 +42,6 @@ public class WebConfig implements WebMvcConfigurer {
 
     //-----------------------------------FastJson配置-----------------------------------------
 /*
-
     @Bean//使用@Bean注入fastJsonHttpMessageConvert
     public HttpMessageConverter fastJsonHttpMessageConverters() {
         //1.需要定义一个Convert转换消息的对象
@@ -56,8 +55,7 @@ public class WebConfig implements WebMvcConfigurer {
         fastJsonConfig.setSerializeConfig(SerializeConfig.globalInstance);
         fastConverter.setFastJsonConfig(fastJsonConfig);
         return fastConverter;
-    }
-*/
+    }*/
 
     @Override
     //配置消息转换器

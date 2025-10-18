@@ -50,7 +50,7 @@ public class BlogLoginServiceImpl implements BlogLoginService {
         String jwt = JwtUtil.createJWT(userId);
         //下面那行的第一个参数: 把上面那行的jwt，也就是token值保存到Redis。存到时候是键值对的形式，值就是jwt，key要加上 "bloglogin:" 前缀
         //下面那行的第二个参数: 要把哪个对象存入Redis。我们写的是loginUser，里面有权限信息，后面会用到
-        redisCache.setCacheObject("bloglogin:"+userId,loginUser);
+        redisCache.setCacheObject("login:"+userId,loginUser);
         //后续请求验证令牌时，可通过用户 ID 从 Redis 中获取用户信息，快速判断用户是否已登录、是否有权限访问资源
 
         //把User转化为UserInfoVo，再放入vo对象的第二个参数
@@ -83,7 +83,7 @@ public class BlogLoginServiceImpl implements BlogLoginService {
         Long userId = loginUser.getUser().getId();
 
         // 4. 清除Redis中的登录状态（确保key与登录时一致）
-        redisCache.deleteObject("bloglogin:" + userId);
+        redisCache.deleteObject("login:" + userId);
 
         // 5. 清除Security上下文（可选，登出后建议清除）
         SecurityContextHolder.getContext().setAuthentication(null);

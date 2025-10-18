@@ -1,3 +1,5 @@
+package com.kon.domain.vo;
+
 import com.kon.domain.entity.Role;
 import com.kon.domain.entity.User;
 import lombok.AllArgsConstructor;

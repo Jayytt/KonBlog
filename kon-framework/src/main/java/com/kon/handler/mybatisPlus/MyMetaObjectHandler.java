@@ -30,15 +30,15 @@ public class MyMetaObjectHandler implements MetaObjectHandler {
             userId = -1L;//如果异常了，就说明该用户还没注册，我们就把该用户的userid字段赋值d为-1
         }
         //自动把下面四个字段新增了值。
-        this.setFieldValByName("createTime", LocalDateTime.now(), metaObject);
+        this.setFieldValByName("createTime", new Date(), metaObject);
         this.setFieldValByName("createBy",userId , metaObject);
-        this.setFieldValByName("updateTime", LocalDateTime.now(), metaObject);
+        this.setFieldValByName("updateTime", new Date(), metaObject);
         this.setFieldValByName("updateBy", userId, metaObject);
     }
 
     @Override
     public void updateFill(MetaObject metaObject) {
-        this.setFieldValByName("updateTime", LocalDateTime.now(), metaObject);
+        this.setFieldValByName("updateTime", new Date(), metaObject);
         this.setFieldValByName(" ", SecurityUtils.getUserId(), metaObject);
     }
 }
